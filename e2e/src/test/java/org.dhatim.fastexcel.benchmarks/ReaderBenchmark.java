@@ -15,7 +15,6 @@
  */
 package org.dhatim.fastexcel.benchmarks;
 
-import com.monitorjbl.xlsx.StreamingReader;
 import org.apache.poi.openxml4j.exceptions.OpenXML4JException;
 import org.apache.poi.openxml4j.opc.OPCPackage;
 import org.apache.poi.ss.usermodel.DataFormatter;
@@ -163,7 +162,7 @@ public class ReaderBenchmark extends BenchmarkLauncher {
     public long monitorjbl() throws IOException {
         long sum = 0;
         try (InputStream is = openResource(FILE);
-             org.apache.poi.ss.usermodel.Workbook workbook = StreamingReader.builder().open(is)) {
+             org.apache.poi.ss.usermodel.Workbook workbook = com.monitorjbl.xlsx.StreamingReader.builder().open(is)) {
             for (org.apache.poi.ss.usermodel.Sheet sheet : workbook) {
                 for (org.apache.poi.ss.usermodel.Row r : sheet) {
                     if (r.getRowNum() == 0) {
@@ -171,12 +170,32 @@ public class ReaderBenchmark extends BenchmarkLauncher {
                     }
                     sum += r.getCell(0).getNumericCellValue();
                 }
+                assertEquals(RESULT, sum);
+                return sum;
             }
         }
-        assertEquals(RESULT, sum);
-        return sum;
+        return -1;
     }
     */
+
+    @Benchmark
+    public long excelStreamingReader() throws IOException {
+        long sum = 0;
+        try (InputStream is = openResource(FILE);
+             org.apache.poi.ss.usermodel.Workbook workbook = com.github.pjfanning.xlsx.StreamingReader.builder().open(is)) {
+            for (org.apache.poi.ss.usermodel.Sheet sheet : workbook) {
+                for (org.apache.poi.ss.usermodel.Row r : sheet) {
+                    if (r.getRowNum() == 0) {
+                        continue;
+                    }
+                    sum += r.getCell(0).getNumericCellValue();
+                }
+                assertEquals(RESULT, sum);
+                return sum;
+            }
+        }
+        return -1;
+    }
 
     private static InputStream openResource(String name) {
         InputStream result = ReaderBenchmark.class.getResourceAsStream(name);
