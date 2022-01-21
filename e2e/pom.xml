@@ -23,16 +23,20 @@
         </repository>
     </repositories>
 
+    <properties>
+        <jmh.version>1.34</jmh.version>
+    </properties>
+
     <dependencies>
         <dependency>
             <groupId>org.dhatim</groupId>
             <artifactId>fastexcel</artifactId>
-            <version>0.12.12</version>
+            <version>0-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>org.dhatim</groupId>
             <artifactId>fastexcel-reader</artifactId>
-            <version>0.12.12</version>
+            <version>0-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>commons-io</groupId>
@@ -56,13 +60,13 @@
         <dependency>
             <groupId>org.openjdk.jmh</groupId>
             <artifactId>jmh-core</artifactId>
-            <version>1.33</version>
+            <version>${jmh.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.openjdk.jmh</groupId>
             <artifactId>jmh-generator-annprocess</artifactId>
-            <version>1.33</version>
+            <version>${jmh.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -88,7 +92,7 @@
         <dependency>
             <groupId>com.github.pjfanning</groupId>
             <artifactId>excel-streaming-reader</artifactId>
-            <version>3.3.0-SNAPSHOT</version>
+            <version>3.4.2-SNAPSHOT</version>
             <scope>test</scope>
             <exclusions>
                 <exclusion>
