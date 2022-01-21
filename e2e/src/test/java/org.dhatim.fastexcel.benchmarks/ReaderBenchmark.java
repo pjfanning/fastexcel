@@ -177,10 +177,28 @@ public class ReaderBenchmark extends BenchmarkLauncher {
     */
 
     @Benchmark
-    public long excelStreamingReader() throws IOException {
+    public long excelStreamingReaderWithStyles() throws IOException {
+        return runExcelStreamingReader(true, false);
+    }
+
+    @Benchmark
+    public long excelStreamingReaderWithoutStyles() throws IOException {
+        return runExcelStreamingReader(false, false);
+    }
+
+    @Benchmark
+    public long excelStreamingReaderWithoutStylesWithReadOnlySst() throws IOException {
+        return runExcelStreamingReader(false, true);
+    }
+
+    private long runExcelStreamingReader(boolean readStyles, boolean readOnlySst) throws IOException {
         long sum = 0;
         try (InputStream is = openResource(FILE);
-             org.apache.poi.ss.usermodel.Workbook workbook = com.github.pjfanning.xlsx.StreamingReader.builder().open(is)) {
+             org.apache.poi.ss.usermodel.Workbook workbook = com.github.pjfanning.xlsx.StreamingReader.builder()
+                     .setReadStyles(readStyles)
+                     .setUseSstReadOnly(readOnlySst)
+                     .open(is)
+        ) {
             for (org.apache.poi.ss.usermodel.Sheet sheet : workbook) {
                 for (org.apache.poi.ss.usermodel.Row r : sheet) {
                     if (r.getRowNum() == 0) {
